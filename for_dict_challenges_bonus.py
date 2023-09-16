@@ -66,5 +66,51 @@ def generate_chat_history():
     return messages
 
 
+messages = generate_chat_history()
+
+def show_common_id(list):
+    user_id_list = []
+
+    for message in list:
+        user_id_list.append(message['sent_by'])
+
+    id_counter = 0
+    most_common = 0
+
+    for id in user_id_list:
+        if user_id_list.count(id) > id_counter:
+            most_common = id
+            id_counter = user_id_list.count(id)
+
+    print(f"Айди пользователя, который написал больше всех сообщений - {most_common}")
+
+
+def show_most_replied_answers_id(list):
+    user_id_list = []
+
+    for message in list:
+        for message2 in list:
+            if message['id'] == message2['reply_for']:
+                user_id_list.append(message['sent_by'])
+
+    user_id_set = set(user_id_list)
+    id_counter = 0
+    most_common = 0
+
+    for id_in_set in user_id_set:
+        counter = 0
+        for id_in_list in user_id_list:
+            if id_in_set == id_in_list:
+                counter += 1
+        if counter > id_counter:
+            id_counter = counter
+            most_common = id_in_set
+
+    print(f"Айди пользователя, на сообщения которого больше всего отвечали - {most_common}")
+
+
 if __name__ == "__main__":
-    print(generate_chat_history())
+
+    show_common_id(messages)
+    show_most_replied_answers_id(messages)
+
